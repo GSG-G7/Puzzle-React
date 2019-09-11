@@ -4,7 +4,7 @@ import Board from './Board';
 
 export default class Puzzle extends React.Component {
   state = {
-    board: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+    board: [1, 2, 3, 4, 5, 6, 7, 8, 0],
     size: 3
   };
   newGame = size => {
@@ -25,8 +25,8 @@ export default class Puzzle extends React.Component {
       <div className="puzzle">
         <h1>React puzzle game</h1>
         {this.state && board ? (
-          <Board size={size} board={board} />
-        ) : //updateBoard={this.updateBoard(board)}
+          <Board size={size} board={board} updateBoard={this.updateBoard}/>
+        ) :
         null}
         <input
           type="submit"
