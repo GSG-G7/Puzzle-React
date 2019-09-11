@@ -7,7 +7,7 @@ export default class Board extends React.Component {
     const { board, size } = this.props;
     this.findPossibles(board, size);
   }
-  componentDidUpdate(){
+  componentDidUpdate() {
     const { board, size } = this.props;
     this.findPossibles(board, size);
   }
@@ -80,24 +80,28 @@ export default class Board extends React.Component {
     }
   };
   render() {
-    const {board, size} = this.props;
+    const { board, size } = this.props;
     const squares = board.map((val, index) => {
       if ((index + 1) % size === 0) {
         return (
           <span key={index}>
-            <Cell value={val} clickHandler={this.clickHandler.bind(this, index)} />
+            <Cell
+              value={val}
+              clickHandler={this.clickHandler.bind(this, index)}
+            />
             <br />
           </span>
         );
       }
       return (
         <span key={index}>
-          <Cell value={val} clickHandler={this.clickHandler.bind(this, index)}/>
+          <Cell
+            value={val}
+            clickHandler={this.clickHandler.bind(this, index)}
+          />
         </span>
-      )
+      );
     });
-    return <div className="board">
-      {squares}
-    </div>;
+    return <div className='board'>{squares}</div>;
   }
 }
