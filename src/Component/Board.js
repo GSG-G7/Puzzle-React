@@ -3,18 +3,11 @@ import Cell from './Cell';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Board extends React.Component {
-  state = {
-    zero: 0,
-    possibleTop: null,
-    possibleRight: 1,
-    possibleLeft: null,
-    possibleBottom: 3
-  };
   componentDidMount() {
     const { board, size } = this.props;
     this.findPossibles(board, size);
   }
-  componentDidUpdate(){
+  componentDidUpdate() {
     const { board, size } = this.props;
     this.findPossibles(board, size);
   }
@@ -36,7 +29,7 @@ export default class Board extends React.Component {
     const zeroCoordinates = this.getCoordinates(zeroIndex, size);
     const possibleTop =
       zeroCoordinates.row > 0
-        ? this.getIndex(zeroCoordinates.row + 1, zeroCoordinates.column, size)
+        ? this.getIndex(zeroCoordinates.row - 1, zeroCoordinates.column, size)
         : null;
     const possibleRight =
       zeroCoordinates.column < size
@@ -87,24 +80,28 @@ export default class Board extends React.Component {
     }
   };
   render() {
-    const {board, size} = this.props;
+    const { board, size } = this.props;
     const squares = board.map((val, index) => {
       if ((index + 1) % size === 0) {
         return (
           <span key={index}>
-            <Cell value={val} clickHandler={this.clickHandler.bind(this, index)} />
+            <Cell
+              value={val}
+              clickHandler={this.clickHandler.bind(this, index)}
+            />
             <br />
           </span>
         );
       }
       return (
         <span key={index}>
-          <Cell value={val} clickHandler={this.clickHandler.bind(this, index)}/>
+          <Cell
+            value={val}
+            clickHandler={this.clickHandler.bind(this, index)}
+          />
         </span>
-      )
+      );
     });
-    return <div className="board">
-      {squares}
-    </div>;
+    return <div className='board'>{squares}</div>;
   }
 }
