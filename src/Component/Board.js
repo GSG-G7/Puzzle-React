@@ -1,5 +1,6 @@
 import React from 'react';
 import Cell from './Cell';
+import isArraySorted from 'is-array-sorted';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Board extends React.Component {
@@ -17,6 +18,13 @@ export default class Board extends React.Component {
     const next = nextProps.board.join('');
     return curr !== next;
   }
+
+  // winGame = board => {
+  //   const newArr=board.pop();
+  //   if (isArraySorted(board)) {
+  //     alert('You won!');
+  //   }
+  // };
 
   getCoordinates = (index, size) => {
     return { row: Math.floor(index / size) + 1, column: (index % size) + 1 };
@@ -60,10 +68,10 @@ export default class Board extends React.Component {
     newBoard[index] = newBoard[zero];
     newBoard[zero] = temp;
     updateBoard(newBoard);
+    // this.winGame(newBoard);
   };
 
   clickHandler = index => {
-    console.log(index);
     const {
       possibleTop,
       possibleRight,
