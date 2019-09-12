@@ -4,7 +4,7 @@ import Board from './Board';
 
 export default class Puzzle extends React.Component {
   state = {
-    board: [1, 2, 3, 4, 5, 6, 7, 0, 8],
+    board: [1, 2, 3, 4, 5, 6, 7, 8, 0],
     size: 3
   };
   newGame = size => {
