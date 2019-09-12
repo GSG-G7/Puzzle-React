@@ -19,12 +19,13 @@ export default class Board extends React.Component {
     return curr !== next;
   }
 
-  // winGame = board => {
-  //   const newArr=board.pop();
-  //   if (isArraySorted(board)) {
-  //     alert('You won!');
-  //   }
-  // };
+  winGame = board => {
+    let board2 = [...board];
+    board2.pop();
+    if (isArraySorted(board2)) {
+      alert('You won!');
+    }
+  };
 
   getCoordinates = (index, size) => {
     return { row: Math.floor(index / size) + 1, column: (index % size) + 1 };
@@ -61,14 +62,16 @@ export default class Board extends React.Component {
     });
   };
   nextBoard = index => {
-    const { board, updateBoard } = this.props;
+    const { board, size, updateBoard } = this.props;
     const { zero } = this.state;
     const newBoard = [...board];
     const temp = newBoard[index];
     newBoard[index] = newBoard[zero];
     newBoard[zero] = temp;
     updateBoard(newBoard);
-    // this.winGame(newBoard);
+    if (newBoard.indexOf(0) === size * size - 1) {
+      this.winGame(newBoard);
+    }
   };
 
   clickHandler = index => {
@@ -78,6 +81,7 @@ export default class Board extends React.Component {
       possibleLeft,
       possibleBottom
     } = this.state;
+
     if (
       index === possibleTop ||
       index === possibleBottom ||
