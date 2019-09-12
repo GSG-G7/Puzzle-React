@@ -24,26 +24,26 @@ export default class Puzzle extends React.Component {
     const { board, size } = this.state;
     return (
       <div className='puzzle'>
-        <h1>React puzzle game</h1>
+        <h1>React Puzzle Game</h1>
         {this.state && board ? (
           <Board size={size} board={board} updateBoard={this.updateBoard} />
         ) : null}
         <input
           type='submit'
-          value='New 3x3 game'
+          value='3x3 game'
           onClick={() => this.newGame(3)}
         />
         <input
           type='submit'
-          value='New 4x4 game'
+          value='4x4 game'
           onClick={() => this.newGame(4)}
         />
         <input
           type='submit'
-          value='New 5x5 game'
+          value='5x5 game'
           onClick={() => this.newGame(5)}
         />
-        <input type='submit' value='Reset' onClick={() => this.newGame(size)} />
+        <input type='submit' value='Reset' className="reset" onClick={() => this.newGame(size)} />
       </div>
     );
   }
