@@ -4,6 +4,9 @@ import isArraySorted from 'is-array-sorted';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Board extends React.Component {
+  state = {
+    win: false
+  }
   componentDidMount() {
     const { board, size } = this.props;
     this.findPossibles(board, size);
@@ -23,42 +26,40 @@ export default class Board extends React.Component {
     let board2 = [...board];
     board2.pop();
     if (isArraySorted(board2)) {
-      alert('You won!');
+      this.setState({win: true});
     }
   };
 
-  getCoordinates = (index, size) => {
-    return { row: Math.floor(index / size) + 1, column: (index % size) + 1 };
-  };
-  getIndex = (row, col, size) => {
-    return size * (row - 1) + col - 1;
-  };
+  getCoordinates = (index, size) => ({ row: Math.floor(index / size) + 1, column: (index % size) + 1 });
+ 
+  getIndex = (row, col, size) => (size * (row - 1) + col - 1);
+
   findPossibles = (board, size) => {
     const zeroIndex = board.indexOf(0);
     const zeroCoordinates = this.getCoordinates(zeroIndex, size);
     const possibleTop =
-      zeroCoordinates.row > 0
-        ? this.getIndex(zeroCoordinates.row - 1, zeroCoordinates.column, size)
-        : null;
+    zeroCoordinates.row > 0
+    ? this.getIndex(zeroCoordinates.row - 1, zeroCoordinates.column, size)
+    : null;
     const possibleRight =
-      zeroCoordinates.column < size
-        ? this.getIndex(zeroCoordinates.row, zeroCoordinates.column + 1, size)
+    zeroCoordinates.column < size
+    ? this.getIndex(zeroCoordinates.row, zeroCoordinates.column + 1, size)
         : null;
-    const possibleLeft =
+        const possibleLeft =
       zeroCoordinates.column > 0
-        ? this.getIndex(zeroCoordinates.row, zeroCoordinates.column - 1, size)
-        : null;
-    const possibleBottom =
+      ? this.getIndex(zeroCoordinates.row, zeroCoordinates.column - 1, size)
+      : null;
+      const possibleBottom =
       zeroCoordinates.row < size
-        ? this.getIndex(zeroCoordinates.row + 1, zeroCoordinates.column, size)
-        : null;
-
+      ? this.getIndex(zeroCoordinates.row + 1, zeroCoordinates.column, size)
+      : null;
+      
     this.setState({
       zero: zeroIndex,
-      possibleTop: possibleTop,
-      possibleRight: possibleRight,
-      possibleLeft: possibleLeft,
-      possibleBottom: possibleBottom
+      possibleTop,
+      possibleRight,
+      possibleLeft,
+      possibleBottom
     });
   };
   nextBoard = index => {
@@ -73,7 +74,7 @@ export default class Board extends React.Component {
       this.winGame(newBoard);
     }
   };
-
+  
   clickHandler = index => {
     const {
       possibleTop,
@@ -81,18 +82,18 @@ export default class Board extends React.Component {
       possibleLeft,
       possibleBottom
     } = this.state;
-
+    
     if (
       index === possibleTop ||
       index === possibleBottom ||
       index === possibleLeft ||
       index === possibleRight
-    ) {
-      this.nextBoard(index);
-    }
-  };
-  render() {
-    const { board, size } = this.props;
+      ) {
+        this.nextBoard(index);
+      }
+    };
+    render() {
+    let { board, size , game} = this.props;
     const squares = board.map((val, index) => {
       if ((index + 1) % size === 0) {
         return (
@@ -100,7 +101,7 @@ export default class Board extends React.Component {
             <Cell
               value={val}
               clickHandler={this.clickHandler.bind(this, index)}
-            />
+              />
             <br />
           </span>
         );
@@ -110,10 +111,34 @@ export default class Board extends React.Component {
           <Cell
             value={val}
             clickHandler={this.clickHandler.bind(this, index)}
-          />
+            />
         </span>
       );
     });
-    return <div className='board'>{squares}</div>;
+    const isWin = 
+        this.state.win
+        && 
+        <div id="popup" className="overlay">
+          <div className="popup">
+            <h2>You Won Game</h2>
+            <a className="close">&times;</a>
+            <div className="content">
+              <input type="submit" value= "Next Level" onClick={(e) => {
+                game(++size);
+                this.state.win = false;
+              }
+            } />
+            </div>
+          </div>
+        </div>
+        ;
+
+      return (
+        <div>
+          <div className='board'>{squares}</div>
+          <div>{isWin}</div>
+        </div>
+        
+      );
+    }
   }
-}

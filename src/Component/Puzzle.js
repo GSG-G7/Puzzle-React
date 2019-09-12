@@ -7,43 +7,33 @@ export default class Puzzle extends React.Component {
     board: [1, 2, 3, 4, 5, 6, 7, 8, 0],
     size: 3
   };
+
   newGame = size => {
-    let board = new Array(size * size);
-    for (let i = 0; i < size * size; i++) {
-      board[i] = i;
-    }
-    board = shuffle(board);
-    this.updateBoard(board);
-    this.setState({ size: size });
+    const board = (Array(size * size).fill(0)).map((item, index) =>  index);
+    this.setState({ size, board: shuffle(board) });
   };
-  updateBoard = board => {
-    this.setState({ board: board });
-  };
+  
+  updateBoard = board => 
+    this.setState({ board });
 
   render() {
     const { board, size } = this.state;
     return (
       <div className='puzzle'>
-        <h1>React puzzle game</h1>
-        {this.state && board ? (
-          <Board size={size} board={board} updateBoard={this.updateBoard} />
-        ) : null}
+        <h1>React Puzzle Game</h1>
+        {(this.state && board )&& (
+          <Board size={size} board={board} updateBoard={this.updateBoard} game={this.newGame}/>
+        ) }
+        {[3, 4, 5].map(item => 
         <input
-          type='submit'
-          value='New 3x3 game'
-          onClick={() => this.newGame(3)}
-        />
-        <input
-          type='submit'
-          value='New 4x4 game'
-          onClick={() => this.newGame(4)}
-        />
-        <input
-          type='submit'
-          value='New 5x5 game'
-          onClick={() => this.newGame(5)}
-        />
-        <input type='submit' value='Reset' onClick={() => this.newGame(size)} />
+        key={item}
+        type='submit'
+        value={`${item} * ${item} game`}
+        onClick={() => this.newGame(item)}
+      />
+        )}
+       
+        <input type='submit' value='Reset' className="reset" onClick={() => this.newGame(size)} />
       </div>
     );
   }
